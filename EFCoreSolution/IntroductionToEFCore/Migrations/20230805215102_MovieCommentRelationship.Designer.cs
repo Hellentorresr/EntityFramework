@@ -4,6 +4,7 @@ using IntroductionToEFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntroductionToEFCore.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230805215102_MovieCommentRelationship")]
+    partial class MovieCommentRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace IntroductionToEFCore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("FilmGenreMovie", b =>
-                {
-                    b.Property<int>("FilmGenresId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MoviesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FilmGenresId", "MoviesId");
-
-                    b.HasIndex("MoviesId");
-
-                    b.ToTable("FilmGenreMovie");
-                });
 
             modelBuilder.Entity("IntroductionToEFCore.Entities.Actor", b =>
                 {
@@ -129,43 +117,6 @@ namespace IntroductionToEFCore.Migrations
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("IntroductionToEFCore.Entities.MovieActor", b =>
-                {
-                    b.Property<int>("ActorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Character")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SearchOrder")
-                        .HasColumnType("int");
-
-                    b.HasKey("ActorId", "MovieId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("MoviesActors");
-                });
-
-            modelBuilder.Entity("FilmGenreMovie", b =>
-                {
-                    b.HasOne("IntroductionToEFCore.Entities.FilmGenre", null)
-                        .WithMany()
-                        .HasForeignKey("FilmGenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IntroductionToEFCore.Entities.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("IntroductionToEFCore.Entities.Comment", b =>
                 {
                     b.HasOne("IntroductionToEFCore.Entities.Movie", "Movie")
@@ -177,35 +128,9 @@ namespace IntroductionToEFCore.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("IntroductionToEFCore.Entities.MovieActor", b =>
-                {
-                    b.HasOne("IntroductionToEFCore.Entities.Actor", "Actor")
-                        .WithMany("MovieActors")
-                        .HasForeignKey("ActorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IntroductionToEFCore.Entities.Movie", "Movie")
-                        .WithMany("MovieActors")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Actor");
-
-                    b.Navigation("Movie");
-                });
-
-            modelBuilder.Entity("IntroductionToEFCore.Entities.Actor", b =>
-                {
-                    b.Navigation("MovieActors");
-                });
-
             modelBuilder.Entity("IntroductionToEFCore.Entities.Movie", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("MovieActors");
                 });
 #pragma warning restore 612, 618
         }

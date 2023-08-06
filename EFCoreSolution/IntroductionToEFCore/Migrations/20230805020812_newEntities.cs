@@ -17,7 +17,7 @@ namespace IntroductionToEFCore.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 50, nullable: false),
                     Furtune = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Birthday = table.Column<DateTime>(type: "date", nullable: false)
                 },

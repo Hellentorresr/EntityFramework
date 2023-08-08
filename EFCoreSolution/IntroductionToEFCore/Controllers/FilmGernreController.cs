@@ -1,4 +1,4 @@
-﻿using IntroductionToEFCore.Entities;
+﻿using DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntroductionToEFCore.Controllers
@@ -14,7 +14,7 @@ namespace IntroductionToEFCore.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(FilmGenre filmGenre)
+        public async Task<ActionResult> Post(FilmGenreDTO filmGenre)
         {
             //Entity framework work code to insert
             _dbContext.Add(filmGenre);

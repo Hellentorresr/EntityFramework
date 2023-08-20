@@ -11,7 +11,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //
-builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer("name=ConnectToMySQL")); 
+builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer("name=ConnectToMySQL"));
+
+//AUTOMapper 
+builder.Services.AddAutoMapper(typeof(Program)); //take the configuration I have in this API project
+
 
 var app = builder.Build();
 

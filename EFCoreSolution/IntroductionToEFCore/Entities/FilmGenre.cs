@@ -8,7 +8,7 @@ namespace IntroductionToEFCore.Entities
 
         public string Name { get; set; } = null!; //wont be null, just to avoid getting the alert
 
-      //setting a navigation property, many to many relationship with Movie
-     public HashSet<Movie> Movies { get; set; } = new HashSet<Movie>();
+       //setting a navigation property, many to many relationship with Movie
+       public HashSet<Movie> Movies { get; set; } = new HashSet<Movie>();
     }
 }

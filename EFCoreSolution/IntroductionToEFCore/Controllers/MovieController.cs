@@ -32,7 +32,7 @@ namespace IntroductionToEFCore.Controllers
                 foreach(var genre in movie.FilmGenres)
                 {
                    context.Entry(genre).State = EntityState.Unchanged; //the Entry method is useful for working with entities that are tracked by the DbContext, as well as entities that are not yet tracked but you want to start tracking them in a specific state.
-                }
+                }                                         //existing record do not create a new one
             }
 
             //when there's a junction table

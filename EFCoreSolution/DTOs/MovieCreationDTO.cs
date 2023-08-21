@@ -16,6 +16,7 @@ namespace DTOs
         public List<int> Genres { get; set; }  = new List<int>();
 
         //I added a DTO to collect this data
+        //a movie can have many actors along its main character
         public List<MovieActorCreationDTO> MovieActorCreationDTOs { get; set; } = new List<MovieActorCreationDTO>();
     }
 }

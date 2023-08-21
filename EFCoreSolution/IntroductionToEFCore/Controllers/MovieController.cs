@@ -39,9 +39,10 @@ namespace IntroductionToEFCore.Controllers
             if(movie.MovieActors is not null)
             {
               for(int i = 0;  i <movie.MovieActors.Count; i++)
-                {
+              {
+                    //assignig to SearchOrder field its value
                     movie.MovieActors[i].SearchOrder = i + 1; //in the same order the actors are being receive they will be save
-                }
+              }
             }
 
             context.Add(movie);

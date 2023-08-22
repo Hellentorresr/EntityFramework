@@ -25,9 +25,9 @@ namespace IntroductionToEFCore.Controllers
         public async Task<ActionResult> CreateMovie(MovieCreationDTO movieDTO)
         {
             var movie = mapper.Map<Movie>(movieDTO);
-            
-            //when there's not a junction table
-            if(movie.FilmGenres is not null)
+
+            //when there's not a junction table -- FilmGenreMovie
+            if (movie.FilmGenres is not null)
             {
                 foreach(var genre in movie.FilmGenres)
                 {
@@ -35,8 +35,8 @@ namespace IntroductionToEFCore.Controllers
                 }                                         //existing record do not create a new one
             }
 
-            //when there's a junction table
-            if(movie.MovieActors is not null)
+            //when there's a junction table -- MoviesActors
+            if (movie.MovieActors is not null)
             {
               for(int i = 0;  i <movie.MovieActors.Count; i++)
               {

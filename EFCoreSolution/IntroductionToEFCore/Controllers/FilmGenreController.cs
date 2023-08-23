@@ -2,6 +2,7 @@
 using DTOs;
 using IntroductionToEFCore.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntroductionToEFCore.Controllers
 {
@@ -42,5 +43,13 @@ namespace IntroductionToEFCore.Controllers
             return Ok();
         }
 
+
+        [HttpGet]
+        [Route("GetFilmGenre")]
+        public async Task<ActionResult<IEnumerable<FilmGenre>>> GetFilmGenre()
+        {
+            //                     table Name
+            return await _dbContext.FilmGenres.ToListAsync();
+        }
     }
 }

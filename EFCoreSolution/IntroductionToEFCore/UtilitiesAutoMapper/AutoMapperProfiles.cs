@@ -6,17 +6,20 @@ namespace IntroductionToEFCore.UtilitiesAutoMapper
 {
     public class AutoMapperProfiles : Profile
     {
-        public AutoMapperProfiles() {
-
+        public AutoMapperProfiles()
+        {
             CreateMap<FilmGenreDTO, FilmGenre>();
 
             CreateMap<ActorDTO, Actor>();
 
-            //mapping from type MovieCreationDTO to Movie
-            CreateMap<MovieCreationDTO, Movie>().ForMember(entity => entity.FilmGenres,
-                dto => dto.MapFrom(field => field.Genres.Select(Id => new FilmGenre { Id = Id})));
+            CreateMap<MovieCreationDTO, Movie>()
+               .ForMember(dest => dest.MovieActors, opt => opt.MapFrom(src => src.MovieActorCreationDTOs))
+               .ForMember(dest => dest.FilmGenres, opt => opt.MapFrom(src => src.Genres.Select(Id => new FilmGenre { Id = Id })));
 
-            CreateMap<MovieActorCreationDTO, MovieActor>();
+            CreateMap<MovieActorCreationDTO, MovieActor>()
+               .ForMember(dest => dest.Character, opt => opt.MapFrom(src => src.MovieCharacter)); // map the 'MovieCharacter' property to the 'Character' property
+
+            CreateMap<CommentDTO, Comment>();
         }
     }
 }

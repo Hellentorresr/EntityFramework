@@ -1,4 +1,5 @@
 ﻿using IntroductionToEFCore.Entities;
+using IntroductionToEFCore.Entities.Seeding;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -34,6 +35,9 @@ namespace IntroductionToEFCore
             //Applying the configuration from all the classes that implement the IEntityTypeConfiguration<TEntity>
             //interface, this interface allows us to to confi the entity types and their relationships in a separate class instead of using the Fuent API in the OnModelCreating method
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            //
+            InitialSeeding.Seeding(modelBuilder);
         }
 
         //I move all this code to Configurations folder devided by entities

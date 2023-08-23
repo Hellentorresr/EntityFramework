@@ -7,6 +7,7 @@ namespace IntroductionToEFCore.Entities.Configurations
     {
         public void Configure(EntityTypeBuilder<MovieActor> builder)
         {
+            //defining the compound key 
             builder.HasKey(movActor => new { movActor.ActorId, movActor.MovieId });
         }
     }

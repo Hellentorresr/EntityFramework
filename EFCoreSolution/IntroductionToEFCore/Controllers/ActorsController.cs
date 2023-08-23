@@ -3,6 +3,7 @@ using AutoMapper;
 using DTOs;
 using IntroductionToEFCore.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntroductionToEFCore.Controllers
 {
@@ -10,12 +11,12 @@ namespace IntroductionToEFCore.Controllers
     [Route("api/actors")]
     public class ActorsController : ControllerBase
     {
-        private readonly ApplicationDBContext context;
+        private readonly ApplicationDBContext _dbContext;
         private readonly IMapper mapper;
 
         public ActorsController(ApplicationDBContext context, IMapper mapper)
         {
-            this.context = context;
+            this._dbContext = context;
             this.mapper = mapper;
         }
 
@@ -24,10 +25,18 @@ namespace IntroductionToEFCore.Controllers
         {
             var actor = mapper.Map<Actor>(actorDTO); //casting the dto to Actor entity
 
-            context.Add(actor);
+            _dbContext.Add(actor);
 
-            await context.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetActors")]
+        public async Task<ActionResult<IEnumerable<Actor>>> GetActors()
+        {
+            //                     table Name
+            return await _dbContext.Actors.ToListAsync();
         }
     }
 }

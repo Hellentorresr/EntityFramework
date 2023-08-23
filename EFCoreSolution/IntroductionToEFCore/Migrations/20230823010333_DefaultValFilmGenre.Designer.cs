@@ -4,6 +4,7 @@ using IntroductionToEFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntroductionToEFCore.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230823010333_DefaultValFilmGenre")]
+    partial class DefaultValFilmGenre
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,13 +38,6 @@ namespace IntroductionToEFCore.Migrations
                     b.HasIndex("MoviesId");
 
                     b.ToTable("FilmGenreMovie");
-
-                    b.HasData(
-                        new
-                        {
-                            FilmGenresId = 9,
-                            MoviesId = 2
-                        });
                 });
 
             modelBuilder.Entity("IntroductionToEFCore.Entities.Actor", b =>
@@ -67,22 +63,6 @@ namespace IntroductionToEFCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Actors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3,
-                            Birthday = new DateTime(1948, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Furtune = 15000m,
-                            Name = "Samuel L. Jackson"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Birthday = new DateTime(1965, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Furtune = 18000m,
-                            Name = "Robert Downey JR."
-                        });
                 });
 
             modelBuilder.Entity("IntroductionToEFCore.Entities.Comment", b =>
@@ -108,15 +88,6 @@ namespace IntroductionToEFCore.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("Comments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Content = "I love it",
-                            MovieId = 2,
-                            Recommend = true
-                        });
                 });
 
             modelBuilder.Entity("IntroductionToEFCore.Entities.FilmGenre", b =>
@@ -171,22 +142,6 @@ namespace IntroductionToEFCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            MovieReleaseDate = new DateTime(2019, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Avengers Endgame",
-                            OnListing = false
-                        },
-                        new
-                        {
-                            Id = 3,
-                            MovieReleaseDate = new DateTime(2021, 12, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Spider-Man: No Way Home",
-                            OnListing = false
-                        });
                 });
 
             modelBuilder.Entity("IntroductionToEFCore.Entities.MovieActor", b =>
@@ -209,22 +164,6 @@ namespace IntroductionToEFCore.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("MoviesActors");
-
-                    b.HasData(
-                        new
-                        {
-                            ActorId = 3,
-                            MovieId = 3,
-                            Character = "Nick Fury",
-                            SearchOrder = 1
-                        },
-                        new
-                        {
-                            ActorId = 3,
-                            MovieId = 2,
-                            Character = "Nick Fury",
-                            SearchOrder = 2
-                        });
                 });
 
             modelBuilder.Entity("FilmGenreMovie", b =>

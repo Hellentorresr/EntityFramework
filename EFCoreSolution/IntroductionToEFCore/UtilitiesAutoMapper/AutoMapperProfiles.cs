@@ -20,6 +20,9 @@ namespace IntroductionToEFCore.UtilitiesAutoMapper
                .ForMember(dest => dest.Character, opt => opt.MapFrom(src => src.MovieCharacter)); // map the 'MovieCharacter' property to the 'Character' property
 
             CreateMap<CommentDTO, Comment>();
+
+            CreateMap<Actor, ActorDTOFilterd>();
+
         }
     }
 }

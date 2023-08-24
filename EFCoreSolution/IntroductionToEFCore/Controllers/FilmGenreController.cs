@@ -86,5 +86,19 @@ namespace IntroductionToEFCore.Controllers
             await _dbContext.SaveChangesAsync(); 
             return Ok();
         }
+
+        //Deleting using the lettes way of doing it
+        [HttpDelete]
+        [Route("DeleteGenre")]
+        public async Task<ActionResult> DeleteGenre(int PId)
+        {
+            //this method: ExecuteDeleteAsync returns the total number of rows deleted in the database
+            var alteredRow = await _dbContext.FilmGenres.Where(g => g.Id == PId).ExecuteDeleteAsync();
+
+            if(alteredRow == 0) return NotFound();
+            
+           // return Ok();
+           return NoContent(); //HTTP response status code 204 No Content is returned by the server to indicate that a HTTP request has been successfully completed, and there is no message body
+        }
     }
 }

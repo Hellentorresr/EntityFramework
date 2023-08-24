@@ -22,6 +22,7 @@ namespace IntroductionToEFCore.Controllers
         }
 
         [HttpPost]
+        [Route("CreateActor")]
         public async Task<ActionResult> CreateActor(ActorDTO actorDTO)
         {
             var actor = mapper.Map<Actor>(actorDTO); //casting the dto to Actor entity
@@ -85,7 +86,7 @@ namespace IntroductionToEFCore.Controllers
             return await _dbContext.Actors.ProjectTo<ActorDTOFilterd>(mapper.ConfigurationProvider).ToListAsync();
         }
 
-        //Applying filters
+        //Applying filters-- operadores booleanos binarios & ||
         [HttpGet]
         [Route("GetActorByRangeBirthday")]
         public async Task<ActionResult<IEnumerable<Actor>>> GetActorByRangeBirthday(DateTime start, DateTime end)

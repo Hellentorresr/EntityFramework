@@ -51,5 +51,40 @@ namespace IntroductionToEFCore.Controllers
             //                     table Name
             return await _dbContext.FilmGenres.ToListAsync();
         }
+
+        //Updating 
+        /*This first approach is called explicit loading, where you first query the entity from the 
+         * database and then modify its properties. This approach is simple and straightforward, but 
+         * it requires an extra roundtrip to the database to load the entity.*/
+        [HttpPut]
+        [Route("UpdateGenreName")]
+        public async Task<ActionResult> UpdateGenreName(int PId, string name)
+        {
+            var genre = _dbContext.FilmGenres.FirstOrDefault(g => g.Id == PId); //first finding the genre
+            if (genre is null) return NotFound();
+
+            genre.Name = name; //updating the property
+
+            await _dbContext.SaveChangesAsync(); //saving the changes
+            return Ok();
+        }
+
+        //Updating 
+        /*The second approach is called disconnected entities, where you create a new entity instance and
+         * attach it to the DbContext with the Update method. This approach does not require loading the
+         * entity from the database, but it assumes that you have all the values for the entity, including
+         * its primary key. This approach is more common for real applications, where you may receive an 
+         * entity from a web API or a user interface*/
+        [HttpPut]
+        [Route("UpdateGenre")]
+        public async Task<ActionResult> UpdateGenre(int PId, FilmGenreDTO genreDTO)
+        {
+            var genre = mapper.Map<FilmGenre>(genreDTO); 
+            genre.Id = PId;
+
+            _dbContext.Update(genre);
+            await _dbContext.SaveChangesAsync(); 
+            return Ok();
+        }
     }
 }

@@ -12,6 +12,9 @@ namespace IntroductionToEFCore.Entities.Configurations
             var fiction = new FilmGenre { Id = 9, Name = "Fiction" };
             var animation = new FilmGenre { Id = 10, Name = "Animation" };
             builder.HasData(animation, fiction);
+
+            //adding a index with EF Core
+            builder.HasIndex(genre => genre.Name).IsUnique();
         }
     }
 }

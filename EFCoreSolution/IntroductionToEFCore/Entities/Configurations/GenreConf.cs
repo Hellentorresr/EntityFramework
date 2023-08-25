@@ -14,7 +14,7 @@ namespace IntroductionToEFCore.Entities.Configurations
             builder.HasData(animation, fiction);
 
             //adding a index with EF Core
-            builder.HasIndex(genre => genre.Name).IsUnique();
+            builder.HasIndex(genre => genre.Name).IsUnique(); //now the name prop is Unique
         }
     }
 }

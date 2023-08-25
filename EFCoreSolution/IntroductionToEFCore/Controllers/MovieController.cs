@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DTOs;
 using IntroductionToEFCore.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +11,12 @@ namespace IntroductionToEFCore.Controllers
   
     public class MovieController : ControllerBase
     {
-        private readonly ApplicationDBContext context;
+        private readonly ApplicationDBContext _dbContext;
         private readonly IMapper mapper;
 
         public MovieController(ApplicationDBContext context, IMapper mapper) 
         {
-            this.context = context;
+            this._dbContext = context;
             this.mapper = mapper;
         }
 
@@ -31,7 +30,7 @@ namespace IntroductionToEFCore.Controllers
             {
                 foreach(var genre in movie.FilmGenres)
                 {
-                   context.Entry(genre).State = EntityState.Unchanged; //the Entry method is useful for working with entities that are tracked by the DbContext, as well as entities that are not yet tracked but you want to start tracking them in a specific state.
+                   _dbContext.Entry(genre).State = EntityState.Unchanged; //the Entry method is useful for working with entities that are tracked by the DbContext, as well as entities that are not yet tracked but you want to start tracking them in a specific state.
                 }                                         //existing record do not create a new one
             }
 
@@ -45,8 +44,8 @@ namespace IntroductionToEFCore.Controllers
                   }
             }
 
-            context.Add(movie);
-            await context.SaveChangesAsync();
+            _dbContext.Add(movie);
+            await _dbContext.SaveChangesAsync();
             return Ok();
         }
 
@@ -59,7 +58,7 @@ namespace IntroductionToEFCore.Controllers
         [Route("GetMoviesById")]
         public async Task<ActionResult<Movie>> GetMoviesById(int PId)
         {
-            var movie = await context.Movies.
+            var movie = await _dbContext.Movies.
                 Include(movie => movie.Comments).
                  Include(movie => movie.FilmGenres).
                      Include(movie => movie.MovieActors.OrderBy(act => act.SearchOrder)).
@@ -81,7 +80,7 @@ namespace IntroductionToEFCore.Controllers
         [Route("GetMoviesByIdSelec")]
         public async Task<ActionResult> GetMoviesByIdSelec(int PId)
         {
-            var movie = await context.Movies.
+            var movie = await _dbContext.Movies.
                 Select(movie => new
                 {
                     movie.Id,
@@ -103,6 +102,21 @@ namespace IntroductionToEFCore.Controllers
             if (movie is null) return NotFound();
 
             return Ok(movie); //by returning Ok(JSON) the anonymous object will be sent serialized
+        }
+
+        //Deleting relational data, 
+        // by deleting a movie the records from the junction table related to the movie will get deleted along with the movie record
+        [HttpDelete]
+        [Route("DeleteMovie")]
+        public async Task<ActionResult> DeleteMovie(int PId)
+        {
+            //this method: ExecuteDeleteAsync returns the total number of rows deleted in the database
+            var alteredRow = await _dbContext.Movies.Where(g => g.Id == PId).ExecuteDeleteAsync();
+
+            if (alteredRow == 0) return NotFound();
+
+            // return Ok();
+            return NoContent(); //HTTP response status code 204 No Content is returned by the server to indicate that a HTTP request has been successfully completed, and there is no message body
         }
     }
 }

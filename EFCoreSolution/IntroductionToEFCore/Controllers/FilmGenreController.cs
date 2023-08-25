@@ -20,8 +20,14 @@ namespace IntroductionToEFCore.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(FilmGenreDTO filmGenreDTO)
+        [Route("CreateGenre")]
+        public async Task<ActionResult> CreateGenre(FilmGenreDTO filmGenreDTO)
         {
+            //validating if the genre already exists to avoid showing the exception to the client, the name pro is Unique
+            var validatingGenre = await _dbContext.FilmGenres.AnyAsync(g => g.Name == filmGenreDTO.Name);
+            if (validatingGenre) return BadRequest($"The genre: {filmGenreDTO.Name}, already exist!!!");
+
+
             //mapping from Entity to DTO
             var _filmGenre = mapper.Map<FilmGenre>(filmGenreDTO);
             //Entity framework work code to insert

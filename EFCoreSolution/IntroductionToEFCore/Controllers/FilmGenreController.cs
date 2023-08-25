@@ -20,8 +20,14 @@ namespace IntroductionToEFCore.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(FilmGenreDTO filmGenreDTO)
+        [Route("CreateGenre")]
+        public async Task<ActionResult> CreateGenre(FilmGenreDTO filmGenreDTO)
         {
+            //validating if the genre already exists to avoid showing the exception to the client, the name pro is Unique
+            var validatingGenre = await _dbContext.FilmGenres.AnyAsync(g => g.Name == filmGenreDTO.Name);
+            if (validatingGenre) return BadRequest($"The genre: {filmGenreDTO.Name}, already exist!!!");
+
+
             //mapping from Entity to DTO
             var _filmGenre = mapper.Map<FilmGenre>(filmGenreDTO);
             //Entity framework work code to insert
@@ -88,6 +94,7 @@ namespace IntroductionToEFCore.Controllers
         }
 
         //Deleting using the lettes way of doing it
+        //More efficient because i'm just performing a query which is deleting
         [HttpDelete]
         [Route("DeleteGenre")]
         public async Task<ActionResult> DeleteGenre(int PId)
@@ -99,6 +106,23 @@ namespace IntroductionToEFCore.Controllers
             
            // return Ok();
            return NoContent(); //HTTP response status code 204 No Content is returned by the server to indicate that a HTTP request has been successfully completed, and there is no message body
+        }
+
+        //Deleting using the classic appr
+        //performing two queries 1: finding the record 2: deleting
+        [HttpDelete]
+        [Route("DeleteGenreTwo")]
+        public async Task<ActionResult> DeleteGenreTwo(int PId)
+        {
+            //First finding the Genre with the id == PId
+            var alteredRow = await _dbContext.FilmGenres.FirstOrDefaultAsync(g => g.Id == PId);
+
+            //Then
+            if(alteredRow is null) return NotFound();
+
+            _dbContext.Remove(alteredRow);
+            await _dbContext.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
